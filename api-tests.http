@@ -1,0 +1,23 @@
+### Test Gateway Health
+GET http://localhost:3001/health
+
+### Test Sensor Data Submission
+POST http://localhost:3001/api/sensor-data
+Content-Type: application/json
+
+{
+  "sensor_id": "test_sensor",
+  "value": 25.5,
+  "timestamp": 1618236072000
+}
+
+### Test Backend API
+GET http://localhost:4000/api/latest-data
+
+### Test ML Service
+POST http://localhost:5000/predict
+Content-Type: application/json
+
+{
+  "features": [25.5]
+}
