@@ -1,0 +1,84 @@
+version: '3'
+
+services:
+  gateway:
+    build: ./gateway
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - BACKEND_URL=http://backend:4000
+    restart: always
+    networks:
+      - iot-network
+
+  backend:
+    build: ./backend
+    ports:
+      - "4000:4000"
+    environment:
+      - PORT=4000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=yourpassword
+      - DB_NAME=iot_project
+      - ML_SERVICE_URL=http://ml-service:5000
+    depends_on:
+      - postgres
+      - ml-service
+    networks:
+      - iot-network
+
+  postgres:
+    image: postgres:16.8
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=yourpassword
+      - POSTGRES_DB=iot_project
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - iot-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "8080:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@example.com
+      - PGADMIN_DEFAULT_PASSWORD=adminpassword
+    depends_on:
+      - postgres
+    networks:
+      - iot-network
+
+  ml-service:
+    build: ./ml-service
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./ml-service/models:/app/models
+    environment:
+      - PORT=5000
+      - MODEL_PATH=/app/models/model.pkl
+    restart: always
+    networks:
+      - iot-network
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    networks:
+      - iot-network
+
+networks:
+  iot-network:
+
+volumes:
+  postgres_data:

@@ -1,3 +1,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.App {
+  text-align: center;
+  padding: 20px;
+}
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.chart-container {
+  margin-bottom: 30px;
+}
+
+.readings-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.readings-table th, .readings-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.readings-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.readings-table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.loading {
+  font-size: 18px;
+  padding: 20px;
+  text-align: center;
+}
+
+.error {
+  color: red;
+  font-size: 18px;
+  padding: 20px;
+  text-align: center;
+}
